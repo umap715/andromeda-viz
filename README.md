@@ -122,4 +122,3 @@ Note that while it's possible to fork Webviz to make your own custom version, we
 > npx browserslist@latest --update-db
 > npm run build-static-webviz
 > npm run serve-static-webviz
-> 

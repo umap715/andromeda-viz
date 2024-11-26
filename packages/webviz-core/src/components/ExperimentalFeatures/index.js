@@ -33,7 +33,7 @@ function getDefaultKey(): "productionDefault" | "developmentDefault" {
 }
 
 export function getExperimentalFeatureFromLocalStorage() {
-  return new Storage().getItem<FeatureStorage>(EXPERIMENTAL_FEATURES_STORAGE_KEY) || {};
+  return new Storage().getItem < FeatureStorage > (EXPERIMENTAL_FEATURES_STORAGE_KEY) || {};
 }
 
 function getExperimentalFeatureSettings(): FeatureSettings {
@@ -54,7 +54,7 @@ let subscribedComponents: (() => void)[] = [];
 
 // Just exported for 3D panel worker context. Use not recommended.
 export function useAllExperimentalFeatures(): FeatureSettings {
-  const [settings, setSettings] = React.useState<FeatureSettings>(() => getExperimentalFeatureSettings());
+  const [settings, setSettings] = React.useState < FeatureSettings > (() => getExperimentalFeatureSettings());
   React.useEffect(() => {
     function update() {
       setSettings(getExperimentalFeatureSettings());
@@ -140,8 +140,8 @@ function IconManuallySet() {
 
 export function ExperimentalFeaturesModal(props: {|
   onRequestClose?: () => void,
-  listForStories?: FeatureDescriptions,
-  settingsForStories?: FeatureSettings,
+    listForStories ?: FeatureDescriptions,
+    settingsForStories ?: FeatureSettings,
 |}) {
   const actualSettings = useAllExperimentalFeatures();
   const settings = props.settingsForStories || actualSettings;
