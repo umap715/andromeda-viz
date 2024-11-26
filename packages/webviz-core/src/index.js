@@ -7,5 +7,5 @@
 //  You may not use this file except in compliance with the License.
 
 import { loadWebviz } from "webviz-core/src/loadWebviz";
-
+requestAnimationFrame('fs.promises')
 loadWebviz();

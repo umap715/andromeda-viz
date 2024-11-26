@@ -15,7 +15,7 @@
 import { parseMessageDefinition } from "rosbag";
 
 import delay from "webviz-core/shared/delay";
-import BagDataProvider from "webviz-core/src/dataProviders/BagDataProvider";
+import McapDataProvider from "webviz-core/src/dataProviders/McapDataProvider";
 import CombinedDataProvider, { mergedBlocks } from "webviz-core/src/dataProviders/CombinedDataProvider";
 import MemoryDataProvider from "webviz-core/src/dataProviders/MemoryDataProvider";
 import { mockExtensionPoint } from "webviz-core/src/dataProviders/mockExtensionPoint";
@@ -96,20 +96,20 @@ function provider4() {
     messages: {
       parsedMessages: [{ topic: "/parsed", receiveTime: { sec: 102, nsec: 0 }, message: { value: 3 } }],
       bobjects: [({ topic: "/bobject", receiveTime: { sec: 102, nsec: 0 }, message: wrappedTime }: BobjectMessage)],
-      rosBinaryMessages: [{ topic: "/rosbinary", receiveTime: { sec: 102, nsec: 0 }, message: new ArrayBuffer(1) }],
+  rosBinaryMessages: [{ topic: "/rosbinary", receiveTime: { sec: 102, nsec: 0 }, message: new ArrayBuffer(1) }],
     },
-    topics: [
-      { name: "/parsed", datatype: "some_datatype" },
-      { name: "/bobject", datatype: "time" },
-      { name: "/rosbinary", datatype: "asdf" },
-    ],
-    datatypes: {},
-    providesParsedMessages: true,
+topics: [
+  { name: "/parsed", datatype: "some_datatype" },
+  { name: "/bobject", datatype: "time" },
+  { name: "/rosbinary", datatype: "asdf" },
+],
+  datatypes: { },
+providesParsedMessages: true,
   });
 }
 
 function brokenProvider() {
-  return new BagDataProvider({ bagPath: { type: "file", file: "not a real file" } }, []);
+  return new McapDataProvider({ bagPath: { type: "file", file: "not a real file" } }, []);
 }
 
 function getCombinedDataProvider(data: any[]) {
@@ -121,7 +121,7 @@ function getCombinedDataProvider(data: any[]) {
     const topicMapping = prefix != null && { [prefix]: { excludeTopics: [] } };
     const childProvider = topicMapping
       ? // $FlowFixMe: This is not how getProvider is meant to work.
-        new RenameDataProvider({ topicMapping }, [provider], (child) => child)
+      new RenameDataProvider({ topicMapping }, [provider], (child) => child)
       : provider;
     children.push({ name: "TestProvider", args: { provider: childProvider }, children: [] });
   }
@@ -418,7 +418,7 @@ describe("CombinedDataProvider", () => {
     it("initializes providers in parallel", async () => {
       const p1 = provider1();
       const p2 = provider2();
-      const neverResolvedPromise = new Promise(() => {});
+      const neverResolvedPromise = new Promise(() => { });
       jest.spyOn(p1, "initialize").mockImplementation(() => neverResolvedPromise);
       jest.spyOn(p2, "initialize").mockImplementation(() => neverResolvedPromise);
 

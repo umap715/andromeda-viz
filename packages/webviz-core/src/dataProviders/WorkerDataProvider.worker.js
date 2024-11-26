@@ -7,7 +7,7 @@
 //  You may not use this file except in compliance with the License.
 
 import ApiCheckerDataProvider from "webviz-core/src/dataProviders/ApiCheckerDataProvider";
-import BagDataProvider from "webviz-core/src/dataProviders/BagDataProvider";
+import McapDataProvider from "webviz-core/src/dataProviders/McapDataProvider";
 import createGetDataProvider from "webviz-core/src/dataProviders/createGetDataProvider";
 import IdbCacheWriterDataProvider from "webviz-core/src/dataProviders/IdbCacheWriterDataProvider";
 import MeasureDataProvider from "webviz-core/src/dataProviders/MeasureDataProvider";
@@ -18,7 +18,7 @@ import Rpc from "webviz-core/src/util/Rpc";
 
 const getDataProvider = createGetDataProvider({
   ApiCheckerDataProvider,
-  BagDataProvider,
+  McapDataProvider,
   MeasureDataProvider,
   IdbCacheWriterDataProvider,
 });

@@ -4,6 +4,9 @@
 //
 //  This source code is licensed under the Apache License, Version 2.0,
 //  found in the LICENSE file in the root directory of this source tree.
+
+import McapDataProvider from "./McapDataProvider";
+
 //  You may not use this file except in compliance with the License.
 export const CoreDataProviders = {
   ApiCheckerDataProvider: "ApiCheckerDataProvider",
@@ -11,6 +14,7 @@ export const CoreDataProviders = {
   CombinedDataProvider: "CombinedDataProvider",
   IdbCacheReaderDataProvider: "IdbCacheReaderDataProvider",
   IdbCacheWriterDataProvider: "IdbCacheWriterDataProvider",
+  McapDataProvider: "McapDataProvider",
   MeasureDataProvider: "MeasureDataProvider",
   MemoryCacheDataProvider: "MemoryCacheDataProvider",
   ParseMessagesDataProvider: "ParseMessagesDataProvider",

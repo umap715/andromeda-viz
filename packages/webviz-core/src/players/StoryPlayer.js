@@ -9,7 +9,7 @@
 import { partition, groupBy } from "lodash";
 
 import { $WEBVIZ_SOURCE_2 } from "../util/globalConstants";
-import BagDataProvider from "webviz-core/src/dataProviders/BagDataProvider";
+import McapDataProvider from "webviz-core/src/dataProviders/McapDataProvider";
 import CombinedDataProvider from "webviz-core/src/dataProviders/CombinedDataProvider";
 import ParseMessagesDataProvider from "webviz-core/src/dataProviders/ParseMessagesDataProvider";
 import RenameDataProvider from "webviz-core/src/dataProviders/RenameDataProvider";
@@ -53,16 +53,16 @@ export default class StoryPlayer implements Player {
         return new RenameDataProvider({ topicMapping }, NOOP_PROVIDER, () => {
           return new ParseMessagesDataProvider({}, NOOP_PROVIDER, () => {
             return new RewriteBinaryDataProvider({}, NOOP_PROVIDER, () => {
-              return new BagDataProvider({ bagPath: bagDescriptor, cacheSizeInBytes: Infinity }, []);
+              return new McapDataProvider({ bagPath: bagDescriptor, cacheSizeInBytes: Infinity }, []);
             });
           });
         });
       });
       provider
         .initialize({
-          progressCallback: () => {},
-          reportMetadataCallback: () => {},
-          notifyPlayerManager: async () => {},
+          progressCallback: () => { },
+          reportMetadataCallback: () => { },
+          notifyPlayerManager: async () => { },
         })
         .then(async ({ topics, start, end, messageDefinitions }) => {
           const { parsedMessages = [], bobjects = [] } = await provider.getMessages(start, end, {
@@ -122,14 +122,14 @@ export default class StoryPlayer implements Player {
     this._bobjectSubscribedTopics = bobjectSubscriptions.map(({ topic }) => topic);
   }
 
-  close = () => {};
-  setPublishers = () => {};
-  publish = () => {};
-  startPlayback = () => {};
-  pausePlayback = () => {};
-  setPlaybackSpeed = () => {};
-  seekPlayback = () => {};
-  requestBackfill = () => {};
-  setGlobalVariables = () => {};
-  setMessageOrder = () => {};
+  close = () => { };
+  setPublishers = () => { };
+  publish = () => { };
+  startPlayback = () => { };
+  pausePlayback = () => { };
+  setPlaybackSpeed = () => { };
+  seekPlayback = () => { };
+  requestBackfill = () => { };
+  setGlobalVariables = () => { };
+  setMessageOrder = () => { };
 }

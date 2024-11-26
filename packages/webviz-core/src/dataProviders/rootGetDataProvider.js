@@ -9,7 +9,7 @@
 import ApiCheckerDataProvider, {
   instrumentTreeWithApiCheckerDataProvider,
 } from "webviz-core/src/dataProviders/ApiCheckerDataProvider";
-import BagDataProvider from "webviz-core/src/dataProviders/BagDataProvider";
+import McapDataProvider from "webviz-core/src/dataProviders/McapDataProvider";
 import CombinedDataProvider from "webviz-core/src/dataProviders/CombinedDataProvider";
 import createGetDataProvider from "webviz-core/src/dataProviders/createGetDataProvider";
 import IdbCacheReaderDataProvider from "webviz-core/src/dataProviders/IdbCacheReaderDataProvider";
@@ -27,7 +27,7 @@ import { MEASURE_DATA_PROVIDERS_QUERY_KEY } from "webviz-core/src/util/globalCon
 
 const getDataProviderBase = createGetDataProvider({
   ApiCheckerDataProvider,
-  BagDataProvider,
+  McapDataProvider,
   CombinedDataProvider,
   IdbCacheReaderDataProvider,
   MeasureDataProvider,

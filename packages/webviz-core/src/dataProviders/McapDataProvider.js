@@ -9,7 +9,13 @@
 import Bzip2 from "compressjs/lib/Bzip2";
 import { debounce, isEqual } from "lodash";
 import Bag, { open, Time, BagReader, TimeUtil } from "rosbag";
+// import Bag, { Time, BagReader, TimeUtil } from "rosbag";
 import decompress from "wasm-lz4";
+// https://mcap.dev/docs/typescript/modules/_mcap_nodejs#md:usage-examples
+// import { loadDecompressHandlers } from "@mcap/support";
+// import { FileHandleReadable } from "@mcap/nodejs";
+// import { McapIndexedReader } from "@mcap/core";
+// import { open } from "fs/promises";
 
 import BrowserHttpReader from "webviz-core/src/dataProviders/BrowserHttpReader";
 import type {
@@ -92,7 +98,7 @@ class LogMetricsReader {
 // Read from a ROS Bag. `bagPath` can either represent a local file, or a remote bag. See
 // `BrowserHttpReader` for how to set up a remote server to be able to directly stream from it.
 // Returns raw messages that still need to be parsed by `ParseMessagesDataProvider`.
-export default class BagDataProvider implements DataProvider {
+export default class McapDataProvider implements DataProvider {
   _options: Options;
   _bag: Bag;
   _lastPerformanceStatsToLog: ?TimedDataThroughput;
@@ -100,7 +106,7 @@ export default class BagDataProvider implements DataProvider {
 
   constructor(options: Options, children: DataProviderDescriptor[]) {
     if (children.length > 0) {
-      throw new Error("BagDataProvider cannot have children");
+      throw new Error("McapDataProvider cannot have children");
     }
     this._options = options;
   }
@@ -109,8 +115,8 @@ export default class BagDataProvider implements DataProvider {
     this._extensionPoint = extensionPoint;
     const { bagPath, cacheSizeInBytes } = this._options;
     await decompress.isLoaded;
-
     if (bagPath.type === "remoteBagUrl") {
+
       const fileReader = new LogMetricsReader(new BrowserHttpReader(bagPath.url), extensionPoint);
       const remoteReader = new CachedFilelike({
         fileReader,
@@ -131,14 +137,28 @@ export default class BagDataProvider implements DataProvider {
         return new Promise(() => { }); // Just never finish initializing.
       }
 
-      this._bag = new Bag(new BagReader(remoteReader));
-      await this._bag.open();
+      // this._bag = new Bag(new BagReader(remoteReader));
+      // await this._bag.open();
+      sendNotification("Cannot upload a remote bag url.", "Not yet supported.", "user", "error");
+      return new Promise(() => { }); // Just never finish initializing.
     } else {
+
       if (process.env.NODE_ENV === "test" && typeof bagPath.file !== "string") {
+
         // Rosbag's `Bag.open` does not accept files in the "node" environment.
         this._bag = await open(bagPath.file.name);
       } else {
+        console.log("uma", "about to open bag")
         this._bag = await open(bagPath.file);
+
+        // const decompressHandlers = await loadDecompressHandlers();
+        // const fileHandle = await open(bagPath.file, "r");
+        // const reader = await McapIndexedReader.Initialize({
+        //   readable: new FileHandleReadable(fileHandle),
+        //   decompressHandlers,
+        // });
+        // this._bag = reader;
+        console.log("uma", "logging this._bag", this._bag)
       }
     }
 

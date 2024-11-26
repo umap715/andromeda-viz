@@ -21,7 +21,7 @@ export const wrapInWorkerIfEnabled = (descriptor: DataProviderDescriptor): DataP
 
 export function getLocalBagDescriptor(file: File): DataProviderDescriptor {
   return wrapInWorkerIfEnabled({
-    name: CoreDataProviders.BagDataProvider,
+    name: CoreDataProviders.McapDataProvider,
     args: { bagPath: { type: "file", file } },
     children: [],
   });
@@ -30,8 +30,8 @@ export function getLocalBagDescriptor(file: File): DataProviderDescriptor {
 export function getRemoteBagDescriptor(url: string, guid: ?string) {
   const unlimitedCache = getExperimentalFeature("unlimitedMemoryCache");
 
-  const bagDataProvider = {
-    name: CoreDataProviders.BagDataProvider,
+  const mcapDataProvider = {
+    name: CoreDataProviders.McapDataProvider,
     args: {
       bagPath: { type: "remoteBagUrl", url },
       cacheSizeInBytes: unlimitedCache ? Infinity : undefined,
@@ -43,15 +43,15 @@ export function getRemoteBagDescriptor(url: string, guid: ?string) {
   // If not, then we don't have a cache key, so just read directly from the bag in memory.
   return guid && getExperimentalFeature("diskBagCaching")
     ? {
-        name: CoreDataProviders.IdbCacheReaderDataProvider,
-        args: { id: guid },
-        children: [
-          wrapInWorkerIfEnabled({
-            name: CoreDataProviders.IdbCacheWriterDataProvider,
-            args: { id: guid },
-            children: [bagDataProvider],
-          }),
-        ],
-      }
-    : wrapInWorkerIfEnabled(bagDataProvider);
+      name: CoreDataProviders.IdbCacheReaderDataProvider,
+      args: { id: guid },
+      children: [
+        wrapInWorkerIfEnabled({
+          name: CoreDataProviders.IdbCacheWriterDataProvider,
+          args: { id: guid },
+          children: [mcapDataProvider],
+        }),
+      ],
+    }
+    : wrapInWorkerIfEnabled(mcapDataProvider);
 }
